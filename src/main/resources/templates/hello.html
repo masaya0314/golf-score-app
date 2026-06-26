@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/style.css">
+    <meta charset="UTF-8">
+    <title>Hello</title>
+</head>
+<body>
+<form action="/result" method="post" th:object="${scoreRecord}">
+    名前：
+    <input type="text" th:field="*{name}">
+    <p th:errors="*{name}" class="error"></p>
+
+    <br><br>
+
+    スコア：
+    <input type="number" th:field="*{score}">
+    <p th:errors="*{score}"></p>
+    <br><br>
+
+    コース：
+    <select th:field="*{course}">
+        <option value=""></option>
+        <option value="秩父">秩父</option>
+        <option value="大相模">大相模</option>
+        <option value="あいかわ">あいかわ</option>
+    </select>
+    <p th:errors="*{course}"></p>
+
+    <br><br>
+
+    <button type="submit">送信</button>
+    <br><br>
+</form>
+<br>
+<form action="/search" method="get">
+    <select name="course">
+        <option value=""></option>
+        <option value="秩父">秩父</option>
+        <option value="大相模">大相模</option>
+        <option value="あいかわ">あいかわ</option>
+    </select>
+    <input type="text" name="name" th:value="${name}">
+    <button type="submit">検索</button>
+</form>
+
+    <h2>過去のスコア</h2>
+    <p th:text="'検索結果:' + ${count} + '件'"></p>
+    <p th:if="${count == 0}">
+        該当するデータがありません
+    </p>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>名前</th>
+            <th>スコア</th>
+            <th>コース</th>
+            <th>登録日時</th>
+            <th>削除</th>
+            <th>編集</th>
+        </tr>
+        <tr th:each="score : ${scores}">
+            <td th:text="${score.id}"></td>
+            <td th:text="${score.name}"></td>
+            <td th:text="${score.score}"></td>
+            <td th:text="${score.course}"></td>
+            <td th:text="${score.createdAt}"></td>
+            <td>
+                <form th:action="@{/delete}" method="post">
+                    <input type="hidden" name="id" th:value="${score.id}">
+                    <button type="submit">削除</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/edit}" method="get">
+                    <input type="hidden" name="id" th:value="${score.id}">
+                    <button type="submit">編集</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <div class="pagination">
+    <form th:if="${hasPrevious}" action="/" method="get" style="display:inline;">
+        <input type="hidden" name="page" th:value="${currentPage - 1}">
+        <button type="submit">前へ</button>
+    </form>
+    <span th:each="p : ${pages}">
+        <a th:href="@{/(page=${p})}"
+           th:text="${p + 1}"
+           style="margin: 0 5px;"></a>
+    </span>
+    <form th:if="${hasNext}" action="/" method="get" style="display:inline;">
+        <input type="hidden" name="page" th:value="${currentPage + 1}">
+        <button type="submit">次へ</button>
+    </form>
+    </div>
+    <div class="sort-buttons">
+    <form action="/sortDesc" method="get">
+        <button type="submit">スコア高い順</button>
+    </form>
+    <form action="/sortAsc" method="get">
+        <button type="submit">スコア低い順</button>
+    </form>
+    </div>
+</body>
+</html>

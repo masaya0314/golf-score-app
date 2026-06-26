@@ -1,0 +1,34 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit</title>
+</head>
+<body>
+<h1>編集画面</h1>
+<p th:text="${message}"></p>
+<form action="/update" method="post">
+    <input type="hidden"
+           name="id"
+           th:value="${score.id}">
+    名前<br>
+    <input type="text"
+           name="name"
+           th:value="${score.name}">
+    <br></br>スコア<br>
+    <input type="number"
+           name="score"
+           th:value="${score.score}">
+    <br></br>コース<br>
+    <select name="course">
+        <option value="秩父" th:selected="${score.course =='秩父'}">秩父</option>
+        <option value="大相模" th:selected="${score.course =='大相模'}">大相模</option>
+        <option value="あいかわ" th:selected="${score.course =='あいかわ'}">あいかわ</option>
+    </select>
+    <button type="submit">更新</button>
+</form>
+</body>
+</html>

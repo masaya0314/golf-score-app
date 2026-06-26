@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Result</title>
+</head>
+<body>
+    <h1 th:text="'こんにちは　'+ ${name}"></h1>
+    <p th:text=" 'スコア　：' + ${score}"></p>
+    <p th:text=" 'コース　： ' + ${course}"></p>
+    <p th:text=" ${message}"></p>
+    <p>おすすめ：</p>
+    <ul>
+        <li th:each="course :${recommendations}"
+            th:text="${course}">
+        </li>
+    </ul>
+    <form action="/" method="get">
+        <button type="submit">トップページに戻る</button>
+    </form>
+</body>
+</html>
